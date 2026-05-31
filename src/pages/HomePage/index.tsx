@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button, Input, Spin } from 'antd';
+import { Button, Input, Skeleton } from 'antd';
 import {
   ClockCircleOutlined,
   EditOutlined,
@@ -173,7 +173,18 @@ const HomePage: React.FC = () => {
               </Button>
             </div>
 
-            <Spin spinning={loadingArticles}>
+            {loadingArticles ? (
+              <div className="articles-grid">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="article-card">
+                    <Skeleton.Image active style={{ width: '100%', height: 140 }} />
+                    <div style={{ padding: 16 }}>
+                      <Skeleton active paragraph={{ rows: 2 }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
               <div className="articles-grid">
                 {recentArticles.map((article) => (
                   <div
@@ -211,7 +222,7 @@ const HomePage: React.FC = () => {
                   </div>
                 ))}
               </div>
-            </Spin>
+            )}
           </div>
         </div>
       )}

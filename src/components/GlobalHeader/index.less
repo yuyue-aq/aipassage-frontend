@@ -84,7 +84,7 @@
 
 .nav-item.active {
   color: var(--color-primary-dark);
-  background: rgba(34, 197, 94, 0.1);
+  background: rgba(168, 85, 247, 0.1);
 }
 
 .nav-icon {
@@ -96,6 +96,24 @@
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  font-size: 18px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.theme-toggle:hover {
+  color: var(--color-primary);
+  background: var(--color-background-secondary);
 }
 
 .user-dropdown {
@@ -121,7 +139,7 @@
 }
 
 .upgrade-vip-btn:hover {
-  background: rgba(34, 197, 94, 0.08);
+  background: rgba(168, 85, 247, 0.08);
   color: var(--color-primary-dark);
 }
 
@@ -175,14 +193,14 @@
   color: white;
   background: var(--gradient-primary);
   border: none;
-  box-shadow: var(--shadow-green);
+  box-shadow: var(--shadow-primary);
   transition: all var(--transition-normal);
   text-decoration: none;
 }
 
 .login-btn:hover {
   color: white;
-  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35);
+  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.35);
 }
 
 .dropdown-menu {
@@ -206,13 +224,13 @@
 
 .vip-info-item {
   color: var(--color-primary-dark) !important;
-  background: rgba(34, 197, 94, 0.1);
+  background: rgba(168, 85, 247, 0.1);
   font-weight: 600;
   cursor: default;
 }
 
 .vip-info-item:hover {
-  background: rgba(34, 197, 94, 0.15);
+  background: rgba(168, 85, 247, 0.15);
 }
 
 @media (max-width: 768px) {

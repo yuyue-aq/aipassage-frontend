@@ -27,6 +27,7 @@ import {
   Modal,
   Progress,
   Radio,
+  Skeleton,
   Spin,
   Tooltip,
   message,
@@ -110,6 +111,7 @@ const ArticleCreatePage: React.FC = () => {
 
   const mainContentRef = useRef<HTMLDivElement | null>(null);
   const eventSourceRef = useRef<EventSource | null>(null);
+  const hasReceivedSseRef = useRef(false);
 
   const scrollToBottom = () => {
     if (mainContentRef.current) {
@@ -161,6 +163,7 @@ const ArticleCreatePage: React.FC = () => {
   }, [outlineRaw]);
 
   const handleSSEMessage = (msg: SSEMessage) => {
+    hasReceivedSseRef.current = true;
     switch (msg.type) {
       case 'AGENT1_COMPLETE':
         setCurrentPhase('TITLE_GENERATING');
@@ -245,6 +248,7 @@ const ArticleCreatePage: React.FC = () => {
         addLog(`创作失败: ${msg.message || '未知错误'}`, 'error');
         break;
       default:
+        console.log('[SSE] 未处理的消息类型:', msg.type, msg);
         break;
     }
   };
@@ -267,6 +271,7 @@ const ArticleCreatePage: React.FC = () => {
     setIsCreating(true);
     setCurrentStep(0);
     setRealtimeLogs([]);
+    hasReceivedSseRef.current = false;
     addLog('开始创建文章任务...', 'info');
 
     try {
@@ -370,6 +375,54 @@ const ArticleCreatePage: React.FC = () => {
       fullContent: '',
       images: [],
     });
+  };
+
+  const applyPhaseFromServer = (phase?: string) => {
+    switch (phase) {
+      case 'TITLE_GENERATING':
+        setCurrentPhase('TITLE_GENERATING');
+        setCurrentStep(0);
+        setIsCreating(true);
+        break;
+      case 'TITLE_SELECTING':
+        setCurrentPhase('TITLE_SELECTING');
+        setCurrentStep(1);
+        setIsCreating(false);
+        break;
+      case 'OUTLINE_GENERATING':
+        setCurrentPhase('OUTLINE_GENERATING');
+        setCurrentStep(1);
+        setIsCreating(true);
+        break;
+      case 'OUTLINE_EDITING':
+        setCurrentPhase('OUTLINE_EDITING');
+        setCurrentStep(1);
+        setIsCreating(false);
+        break;
+      case 'CONTENT_GENERATING':
+        setCurrentPhase('CONTENT_GENERATING');
+        setCurrentStep(2);
+        setIsCreating(true);
+        break;
+      case 'IMAGE_ANALYZING':
+      case 'IMAGE_GENERATING':
+      case 'MERGE_CONTENT':
+        setCurrentPhase('CONTENT_GENERATING');
+        setCurrentStep(4);
+        setIsCreating(true);
+        break;
+      case 'COMPLETED':
+      case 'ALL_COMPLETE':
+        setCurrentPhase('COMPLETED');
+        setCurrentStep(6);
+        setIsCompleted(true);
+        setIsCreating(false);
+        setIsStreaming(false);
+        setIsOutlineStreaming(false);
+        break;
+      default:
+        break;
+    }
   };
 
   useEffect(() => {
@@ -519,7 +572,9 @@ const ArticleCreatePage: React.FC = () => {
 
           {currentPhase === 'TITLE_GENERATING' && (
             <div className="loading-stage">
-              <Spin size="large" />
+              <Skeleton active paragraph={{ rows: 1 }} />
+              <Skeleton active paragraph={{ rows: 1 }} />
+              <Skeleton active paragraph={{ rows: 1 }} />
               <h3>AI 正在生成标题方案...</h3>
               <p>稍等片刻，即将为您呈现多个精彩标题</p>
             </div>
@@ -560,7 +615,7 @@ const ArticleCreatePage: React.FC = () => {
                   </div>
                 ) : (
                   <div className="outline-loading">
-                    <Spin />
+                    <Skeleton active paragraph={{ rows: 2 }} />
                     <span>正在构建文章结构...</span>
                   </div>
                 )}

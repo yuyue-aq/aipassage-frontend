@@ -13,6 +13,10 @@ export default defineConfig({
    */
   hash: true,
   /**
+   * @name 路由懒加载
+   * @description UmiJS 4 默认启用路由级代码分割，无需额外配置
+   */
+  /**
    * @name 兼容性设置
    * @description 设置 ie11 不一定完美兼容，需要检查自己使用的所有依赖
    * @doc https://umijs.org/docs/api/config#targets

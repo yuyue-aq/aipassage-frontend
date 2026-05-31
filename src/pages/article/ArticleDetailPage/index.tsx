@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Divider, Modal, Spin, Tag, message } from 'antd';
+import { Button, Card, Divider, Modal, Skeleton, Tag, message } from 'antd';
 import {
   ArrowLeftOutlined,
   CheckCircleOutlined,
@@ -161,9 +161,14 @@ const ArticleDetailPage: React.FC = () => {
       </div>
 
       <div className="container">
-        <Spin spinning={loading} tip="加载中...">
-          {article && (
-            <Card bordered={false} className="article-card">
+        {loading ? (
+          <Card bordered={false} className="article-card">
+            <Skeleton active paragraph={{ rows: 3 }} />
+            <Divider />
+            <Skeleton active paragraph={{ rows: 8 }} />
+          </Card>
+        ) : article ? (
+          <Card bordered={false} className="article-card">
               <div className="title-section">
                 <h1 className="main-title">{article.mainTitle}</h1>
                 <p className="sub-title">{article.subTitle}</p>
@@ -319,8 +324,7 @@ const ArticleDetailPage: React.FC = () => {
                 </div>
               )}
             </Card>
-          )}
-        </Spin>
+          ) : null}
       </div>
     </div>
   );

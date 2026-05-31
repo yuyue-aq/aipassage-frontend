@@ -198,7 +198,7 @@ const StatisticsPage: React.FC = () => {
         <Spin spinning={loading} tip="加载中...">
           <div className="stats-grid">
             <div className="stat-card">
-              <div className="stat-icon" style={{ background: 'rgba(34, 197, 94, 0.1)' }}>
+              <div className="stat-icon" style={{ background: 'rgba(168, 85, 247, 0.1)' }}>
                 <FileTextOutlined style={{ color: 'var(--color-primary)' }} />
               </div>
               <div className="stat-content">

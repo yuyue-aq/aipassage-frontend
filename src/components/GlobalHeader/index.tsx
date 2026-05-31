@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Avatar, Dropdown, Layout, message, Space } from 'antd';
+import { Avatar, Dropdown, Layout, message, Space, Tooltip } from 'antd';
 import { Link, useLocation, useModel } from '@umijs/max';
 import {
   BarChartOutlined,
@@ -7,9 +7,12 @@ import {
   EditOutlined,
   HomeOutlined,
   LogoutOutlined,
+  MoonOutlined,
   SettingOutlined,
+  SunOutlined,
   UnorderedListOutlined,
 } from '@ant-design/icons';
+import useTheme from '@/hooks/useTheme';
 import { userLogoutUsingPost } from '@/services/backend/userController';
 import { isVip as checkIsVip } from '@/utils/permission';
 import logo from '@/assets/logo.png';
@@ -22,6 +25,7 @@ const GlobalHeader: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
   const currentUser = initialState?.currentUser;
   const isVip = useMemo(() => checkIsVip(currentUser), [currentUser]);
+  const { theme, toggleTheme } = useTheme();
 
   const menuItems = useMemo(
     () =>
@@ -96,6 +100,11 @@ const GlobalHeader: React.FC = () => {
         </nav>
 
         <div className="header-right">
+          <Tooltip title={theme === 'light' ? '切换深色主题' : '切换浅色主题'}>
+            <span className="theme-toggle" onClick={toggleTheme}>
+              {theme === 'light' ? <MoonOutlined /> : <SunOutlined />}
+            </span>
+          </Tooltip>
           {currentUser?.id ? (
             <div className="user-dropdown">
               {!isVip ? (
