@@ -268,7 +268,7 @@ const ArticleListPage: React.FC = () => {
           </div>
         </div>
 
-        <Card bordered={false} className="table-card">
+        <Card variant="borderless" className="table-card">
           <Table
             rowKey="id"
             columns={columns as any}

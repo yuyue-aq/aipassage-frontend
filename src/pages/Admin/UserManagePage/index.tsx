@@ -110,7 +110,7 @@ const UserManagePage: React.FC = () => {
       </div>
 
       <div className="container">
-        <Card bordered={false} className="content-card">
+        <Card variant="borderless" className="content-card">
           <div className="search-section">
             <Form layout="inline" onFinish={handleSearch} className="search-form">
               <Form.Item label="账号" name="userAccount">

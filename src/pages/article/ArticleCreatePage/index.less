@@ -505,6 +505,37 @@
   color: var(--color-text-muted);
 }
 
+.patience-notice {
+  background: linear-gradient(135deg, #fffbe6 0%, #fff7cc 100%);
+  border: 1px solid #ffe58f;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-top: 24px;
+  text-align: center;
+}
+
+.patience-notice .patience-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #d48806;
+}
+
+.patience-notice .patience-desc {
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: #8c6d1f;
+  line-height: 1.6;
+}
+
+.patience-notice .new-article-btn {
+  border-radius: var(--radius-md);
+}
+
 .loading-placeholder {
   text-align: center;
   padding: 100px 0;
@@ -591,6 +622,11 @@
 .quota-badge.vip {
   background: var(--gradient-primary);
   color: white;
+}
+
+.quota-badge.user {
+  background: var(--color-background-tertiary);
+  color: var(--color-text);
 }
 
 .quota-text {

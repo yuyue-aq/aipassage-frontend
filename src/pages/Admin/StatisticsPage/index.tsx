@@ -239,7 +239,7 @@ const StatisticsPage: React.FC = () => {
           </div>
 
           <div className="charts-grid">
-            <Card bordered={false} className="chart-card">
+            <Card variant="borderless" className="chart-card">
               <h3 className="chart-title">
                 <LineChartOutlined />
                 创作趋势
@@ -247,7 +247,7 @@ const StatisticsPage: React.FC = () => {
               <div ref={trendChartRef} className="chart-container" />
             </Card>
 
-            <Card bordered={false} className="chart-card">
+            <Card variant="borderless" className="chart-card">
               <h3 className="chart-title">
                 <ThunderboltOutlined />
                 性能统计
@@ -271,7 +271,7 @@ const StatisticsPage: React.FC = () => {
           </div>
 
           <div className="charts-grid">
-            <Card bordered={false} className="chart-card">
+            <Card variant="borderless" className="chart-card">
               <h3 className="chart-title">
                 <TeamOutlined />
                 用户分析
@@ -279,7 +279,7 @@ const StatisticsPage: React.FC = () => {
               <div ref={userChartRef} className="chart-container" />
             </Card>
 
-            <Card bordered={false} className="chart-card">
+            <Card variant="borderless" className="chart-card">
               <h3 className="chart-title">
                 <CrownOutlined />
                 配额使用情况

@@ -113,6 +113,7 @@
 }
 
 .table-card {
+  background: var(--color-background);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
   box-shadow: none;
@@ -120,7 +121,21 @@
 }
 
 .table-card .ant-card-body {
+  background: var(--color-background);
   padding: 0;
+}
+
+/* Ant Design Table 全局背景覆盖 */
+.article-table {
+  background: var(--color-background);
+}
+
+.article-table .ant-table {
+  background: var(--color-background);
+}
+
+.article-table .ant-table-container {
+  background: var(--color-background);
 }
 
 .article-table .ant-table-thead > tr > th {
@@ -133,16 +148,84 @@
 }
 
 .article-table .ant-table-tbody > tr > td {
+  background: var(--color-background);
+  color: var(--color-text);
   padding: 16px;
   border-bottom: 1px solid var(--color-border-light);
 }
 
 .article-table .ant-table-tbody > tr:hover > td {
-  background: rgba(168, 85, 247, 0.02);
+  background: var(--color-background-tertiary) !important;
+}
+
+.article-table .ant-table-tbody > tr.ant-table-row {
+  background: var(--color-background);
 }
 
 .article-table .ant-table-pagination {
   margin: 16px;
+}
+
+/* Ant Design 分页组件深色适配 */
+.article-table .ant-pagination-item {
+  background: var(--color-background);
+  border-color: var(--color-border);
+}
+
+.article-table .ant-pagination-item a {
+  color: var(--color-text);
+}
+
+.article-table .ant-pagination-item:hover {
+  border-color: var(--color-primary);
+}
+
+.article-table .ant-pagination-item:hover a {
+  color: var(--color-primary);
+}
+
+.article-table .ant-pagination-item-active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.article-table .ant-pagination-item-active a {
+  color: #fff;
+}
+
+.article-table .ant-pagination-prev .ant-pagination-item-link,
+.article-table .ant-pagination-next .ant-pagination-item-link {
+  background: var(--color-background);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.article-table .ant-pagination-disabled .ant-pagination-item-link {
+  color: var(--color-text-muted);
+}
+
+.article-table .ant-pagination-options-quick-jumper input {
+  background: var(--color-background);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.article-table .ant-pagination-options-quick-jumper {
+  color: var(--color-text-secondary);
+}
+
+.article-table .ant-select-selector {
+  background: var(--color-background) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+}
+
+.article-table .ant-select .ant-select-arrow {
+  color: var(--color-text-muted);
+}
+
+.article-table .ant-table-column-sorter {
+  color: var(--color-text-muted);
 }
 
 .title-cell {

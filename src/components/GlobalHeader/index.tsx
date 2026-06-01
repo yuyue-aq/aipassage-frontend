@@ -3,7 +3,6 @@ import { Avatar, Dropdown, Layout, message, Space, Tooltip } from 'antd';
 import { Link, useLocation, useModel } from '@umijs/max';
 import {
   BarChartOutlined,
-  CrownOutlined,
   EditOutlined,
   HomeOutlined,
   LogoutOutlined,
@@ -14,7 +13,6 @@ import {
 } from '@ant-design/icons';
 import useTheme from '@/hooks/useTheme';
 import { userLogoutUsingPost } from '@/services/backend/userController';
-import { isVip as checkIsVip } from '@/utils/permission';
 import logo from '@/assets/logo.png';
 import './index.less';
 
@@ -24,7 +22,6 @@ const GlobalHeader: React.FC = () => {
   const location = useLocation();
   const { initialState, setInitialState } = useModel('@@initialState');
   const currentUser = initialState?.currentUser;
-  const isVip = useMemo(() => checkIsVip(currentUser), [currentUser]);
   const { theme, toggleTheme } = useTheme();
 
   const menuItems = useMemo(
@@ -53,18 +50,6 @@ const GlobalHeader: React.FC = () => {
   };
 
   const dropdownItems = [
-    ...(isVip
-      ? [
-          {
-            key: 'vip-info',
-            icon: <CrownOutlined />,
-            label: '永久会员权益',
-            onClick: () => null,
-            className: 'vip-info-item',
-          },
-          { type: 'divider' as const },
-        ]
-      : []),
     {
       key: 'logout',
       icon: <LogoutOutlined />,
@@ -107,18 +92,6 @@ const GlobalHeader: React.FC = () => {
           </Tooltip>
           {currentUser?.id ? (
             <div className="user-dropdown">
-              {!isVip ? (
-                <Link to="/vip" className="upgrade-vip-btn">
-                  <CrownOutlined />
-                  <span>升级 VIP</span>
-                </Link>
-              ) : (
-                <Link to="/vip" className="vip-badge">
-                  <CrownOutlined />
-                  <span>VIP</span>
-                </Link>
-              )}
-
               <Dropdown menu={{ items: dropdownItems }} placement="bottomRight">
                 <Space className="user-info">
                   <Avatar src={currentUser.userAvatar} size={36} className="user-avatar" />

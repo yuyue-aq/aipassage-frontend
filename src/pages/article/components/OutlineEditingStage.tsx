@@ -1,10 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Input, message } from 'antd';
-import { CheckOutlined, CrownOutlined, DeleteOutlined, PlusOutlined, RobotOutlined } from '@ant-design/icons';
+import { CheckOutlined, DeleteOutlined, PlusOutlined, RobotOutlined } from '@ant-design/icons';
 import Sortable from 'sortablejs';
-import { Link, useModel } from '@umijs/max';
 import { aiModifyOutlineUsingPost } from '@/services/backend/articleController';
-import { isVip as checkIsVip } from '@/utils/permission';
 import './OutlineEditingStage.less';
 
 interface OutlineSection {
@@ -21,8 +19,6 @@ interface OutlineEditingStageProps {
 }
 
 const OutlineEditingStage: React.FC<OutlineEditingStageProps> = ({ outline, taskId, loading = false, onConfirm }) => {
-  const { initialState } = useModel('@@initialState');
-  const isVip = useMemo(() => checkIsVip(initialState?.currentUser), [initialState?.currentUser]);
   const [outlineSections, setOutlineSections] = useState<OutlineSection[]>([]);
   const [modifySuggestion, setModifySuggestion] = useState('');
   const [aiModifying, setAiModifying] = useState(false);
@@ -209,48 +205,32 @@ const OutlineEditingStage: React.FC<OutlineEditingStageProps> = ({ outline, task
         ))}
       </div>
 
-      <div className={`ai-chat-section${isVip ? '' : ' vip-only'}`}>
+      <div className="ai-chat-section">
         <div className="chat-header">
           <RobotOutlined />
           <span>AI 助手修改大纲</span>
-          {!isVip && (
-            <span className="vip-badge-small">
-              <CrownOutlined />
-              VIP
-            </span>
-          )}
         </div>
-        {isVip ? (
-          <div className="chat-input-wrapper">
-            <Input.TextArea
-              value={modifySuggestion}
-              onChange={(event) => setModifySuggestion(event.target.value)}
-              placeholder="告诉 AI 如何修改大纲，例如：请在第二章节后增加一个关于实践案例的章节"
-              rows={3}
-              maxLength={500}
-              showCount
-              className="chat-textarea"
-            />
-            <Button
-              type="primary"
-              loading={aiModifying}
-              disabled={!modifySuggestion.trim()}
-              onClick={handleAiModify}
-              className="ai-modify-btn"
-              icon={<RobotOutlined />}
-            >
-              AI 修改大纲
-            </Button>
-          </div>
-        ) : (
-          <div className="vip-upgrade-notice">
-            <CrownOutlined className="vip-icon" />
-            <p>AI 修改大纲功能仅限 VIP 会员使用</p>
-            <Link to="/vip" className="upgrade-btn">
-              立即升级 VIP
-            </Link>
-          </div>
-        )}
+        <div className="chat-input-wrapper">
+          <Input.TextArea
+            value={modifySuggestion}
+            onChange={(event) => setModifySuggestion(event.target.value)}
+            placeholder="告诉 AI 如何修改大纲，例如：请在第二章节后增加一个关于实践案例的章节"
+            rows={3}
+            maxLength={500}
+            showCount
+            className="chat-textarea"
+          />
+          <Button
+            type="primary"
+            loading={aiModifying}
+            disabled={!modifySuggestion.trim()}
+            onClick={handleAiModify}
+            className="ai-modify-btn"
+            icon={<RobotOutlined />}
+          >
+            AI 修改大纲
+          </Button>
+        </div>
       </div>
 
       <div className="actions">

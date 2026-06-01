@@ -176,13 +176,16 @@
     color: var(--color-text);
   }
   .ant-dropdown-menu {
-    background-color: var(--color-background-secondary);
+    background-color: var(--color-background-secondary) !important;
   }
   .ant-dropdown-menu-item {
-    color: var(--color-text);
+    color: var(--color-text) !important;
   }
   .ant-dropdown-menu-item:hover {
-    background-color: var(--color-background-tertiary);
+    background-color: var(--color-background-tertiary) !important;
+  }
+  .ant-dropdown-menu-item-disabled {
+    color: var(--color-text-muted) !important;
   }
   .ant-message-notice-content,
   .ant-notification-notice {
@@ -523,16 +526,25 @@ button,
 }
 /* Dropdown 菜单 */
 [data-theme='dark'] .ant-dropdown-menu {
-  background-color: var(--color-background-secondary);
+  background-color: var(--color-background-secondary) !important;
 }
 [data-theme='dark'] .ant-dropdown-menu-item {
-  color: var(--color-text);
+  color: var(--color-text) !important;
 }
 [data-theme='dark'] .ant-dropdown-menu-item:hover {
-  background-color: var(--color-background-tertiary);
+  background-color: var(--color-background-tertiary) !important;
 }
 [data-theme='dark'] .ant-dropdown-menu-item-disabled {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted) !important;
+}
+[data-theme='dark'] .ant-dropdown-menu-item-divider {
+  border-color: var(--color-border) !important;
+}
+[data-theme='dark'] .ant-dropdown-menu-item .anticon {
+  color: var(--color-text-secondary) !important;
+}
+[data-theme='dark'] .ant-dropdown-menu-item-danger {
+  color: var(--color-error) !important;
 }
 /* Message / Notification */
 [data-theme='dark'] .ant-message-notice-content,

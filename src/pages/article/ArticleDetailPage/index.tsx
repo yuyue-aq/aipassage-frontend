@@ -162,13 +162,13 @@ const ArticleDetailPage: React.FC = () => {
 
       <div className="container">
         {loading ? (
-          <Card bordered={false} className="article-card">
+          <Card variant="borderless" className="article-card">
             <Skeleton active paragraph={{ rows: 3 }} />
             <Divider />
             <Skeleton active paragraph={{ rows: 8 }} />
           </Card>
         ) : article ? (
-          <Card bordered={false} className="article-card">
+          <Card variant="borderless" className="article-card">
               <div className="title-section">
                 <h1 className="main-title">{article.mainTitle}</h1>
                 <p className="sub-title">{article.subTitle}</p>

@@ -6,19 +6,15 @@ import {
   CheckCircleOutlined,
   ClockCircleOutlined,
   CopyOutlined,
-  CrownOutlined,
   EyeOutlined,
   FileTextOutlined,
   InfoCircleOutlined,
   LoadingOutlined,
-  MessageOutlined,
   PictureOutlined,
-  QuestionCircleOutlined,
   RedoOutlined,
   RocketOutlined,
   StarOutlined,
   ThunderboltOutlined,
-  WarningOutlined,
 } from '@ant-design/icons';
 import {
   Button,
@@ -29,12 +25,11 @@ import {
   Radio,
   Skeleton,
   Spin,
-  Tooltip,
   message,
 } from 'antd';
 import { useLocation, useModel, useNavigate } from '@umijs/max';
 import { connectSSE, closeSSE, type SSEMessage } from '@/utils/sse';
-import { isAdmin as checkIsAdmin, isVip as checkIsVip, hasQuota as checkHasQuota } from '@/utils/permission';
+import { isAdmin as checkIsAdmin } from '@/utils/permission';
 import { markdownToHtml } from '@/utils/markdown';
 import { createArticleUsingPost, confirmOutlineUsingPost, confirmTitleUsingPost } from '@/services/backend/articleController';
 import TitleSelectingStage from '../components/TitleSelectingStage';
@@ -60,9 +55,6 @@ const ArticleCreatePage: React.FC = () => {
   const currentUser = initialState?.currentUser;
 
   const isAdmin = useMemo(() => checkIsAdmin(currentUser), [currentUser]);
-  const isVip = useMemo(() => checkIsVip(currentUser), [currentUser]);
-  const quota = useMemo(() => currentUser?.quota ?? 0, [currentUser]);
-  const hasQuota = useMemo(() => checkHasQuota(currentUser), [currentUser]);
 
   const agentSteps = useMemo(
     () => [
@@ -178,6 +170,7 @@ const ArticleCreatePage: React.FC = () => {
         break;
       case 'AGENT2_STREAMING':
         setCurrentPhase('OUTLINE_GENERATING');
+        setIsCreating(true);
         setIsOutlineStreaming(true);
         setOutlineRaw((prev) => prev + (msg.content || ''));
         scrollToBottom();
@@ -191,6 +184,7 @@ const ArticleCreatePage: React.FC = () => {
         break;
       case 'AGENT3_STREAMING':
         setCurrentPhase('CONTENT_GENERATING');
+        setIsCreating(true);
         setCurrentStep(2);
         setIsStreaming(true);
         setArticle((prev) => ({
@@ -200,11 +194,13 @@ const ArticleCreatePage: React.FC = () => {
         scrollToBottom();
         break;
       case 'AGENT3_COMPLETE':
+        setIsCreating(true);
         setIsStreaming(false);
         setCurrentStep(3);
-        addLog('正文生成完成', 'success');
+        addLog('正文生成完成，开始分析配图', 'success');
         break;
       case 'AGENT4_COMPLETE':
+        setIsCreating(true);
         setCurrentStep(4);
         setTotalImages(msg.imageRequirements?.length || 5);
         addLog(`配图需求分析完成，共 ${msg.imageRequirements?.length || 5} 张`, 'success');
@@ -218,6 +214,7 @@ const ArticleCreatePage: React.FC = () => {
         addLog(`配图生成中 ${imageCount + 1}/${totalImages}`, 'info');
         break;
       case 'AGENT5_COMPLETE':
+        setIsCreating(true);
         setCurrentStep(5);
         setArticle((prev) => ({
           ...prev,
@@ -237,6 +234,8 @@ const ArticleCreatePage: React.FC = () => {
         setCurrentPhase('COMPLETED');
         setCurrentStep(6);
         setIsCompleted(true);
+        setIsCreating(false);
+        setIsStreaming(false);
         message.success('文章创作完成!');
         addLog('✨ 文章创作完成！', 'success');
         break;
@@ -263,11 +262,6 @@ const ArticleCreatePage: React.FC = () => {
       message.warning('请输入选题');
       return;
     }
-    if (!hasQuota) {
-      message.error('配额不足，无法创建文章');
-      return;
-    }
-
     setIsCreating(true);
     setCurrentStep(0);
     setRealtimeLogs([]);
@@ -323,6 +317,7 @@ const ArticleCreatePage: React.FC = () => {
 
   const handleConfirmOutline = async (outlineData: Array<{ section: number; title: string; points: string[] }>) => {
     setConfirmLoading(true);
+    setIsCreating(true);
     try {
       await confirmOutlineUsingPost({
         taskId,
@@ -331,6 +326,7 @@ const ArticleCreatePage: React.FC = () => {
       setOutlineRaw(JSON.stringify({ sections: outlineData }));
       message.success('大纲已确认，正在生成正文...');
     } catch (error: any) {
+      setIsCreating(false);
       message.error(error?.message || '确认大纲失败');
     } finally {
       setConfirmLoading(false);
@@ -523,48 +519,25 @@ const ArticleCreatePage: React.FC = () => {
                       className="methods-group"
                     >
                       <Checkbox value="PEXELS">Pexels</Checkbox>
-                      <Tooltip title={isVip ? '' : '仅限 VIP 会员'}>
-                        <Checkbox value="NANO_BANANA" disabled={!isVip}>
-                          Nano Banana {!isVip && <CrownOutlined className="vip-icon" />}
-                        </Checkbox>
-                      </Tooltip>
+                      <Checkbox value="NANO_BANANA">Nano Banana</Checkbox>
                       <Checkbox value="MERMAID">Mermaid</Checkbox>
                       <Checkbox value="ICONIFY">Iconify</Checkbox>
                       <Checkbox value="EMOJI_PACK">表情包</Checkbox>
-                      <Tooltip title={isVip ? '' : '仅限 VIP 会员'}>
-                        <Checkbox value="SVG_DIAGRAM" disabled={!isVip}>
-                          SVG {!isVip && <CrownOutlined className="vip-icon" />}
-                        </Checkbox>
-                      </Tooltip>
+                      <Checkbox value="SVG_DIAGRAM">SVG</Checkbox>
                     </Checkbox.Group>
-                    {!isVip && (
-                      <div className="vip-notice">
-                        <CrownOutlined />
-                        <span>AI 生图和 SVG 图表为 VIP 专属功能，</span>
-                        <Button type="link" className="upgrade-link" onClick={() => navigate('/vip')}>
-                          立即升级
-                        </Button>
-                      </div>
-                    )}
                   </div>
 
                   <Button
                     type="primary"
                     size="large"
                     loading={isCreating}
-                    disabled={!topic.trim() || !hasQuota}
+                    disabled={!topic.trim()}
                     onClick={startCreate}
                     className="create-btn"
                   >
                     <RocketOutlined />
                     开始创作
                   </Button>
-                  {!hasQuota && (
-                    <div className="quota-warning">
-                      <WarningOutlined />
-                      <span>配额已用完，无法创建文章</span>
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
@@ -670,6 +643,19 @@ const ArticleCreatePage: React.FC = () => {
                 </div>
               )}
 
+              {currentStep === 3 && isCreating && (
+                <div className="image-progress-box">
+                  <div className="progress-header">
+                    <PictureOutlined />
+                    <span>正在分析配图需求...</span>
+                  </div>
+                  <Spin />
+                  <p className="progress-hint">
+                    AI 正在为文章匹配合适的配图位置和类型
+                  </p>
+                </div>
+              )}
+
               {currentStep === 4 && imageProgress > 0 && (
                 <div className="image-progress-box">
                   <div className="progress-header">
@@ -680,6 +666,27 @@ const ArticleCreatePage: React.FC = () => {
                   <p className="progress-hint">
                     {imageCount}/{totalImages} 张图片已完成
                   </p>
+                </div>
+              )}
+
+              {currentStep >= 3 && currentStep < 6 && isCreating && (
+                <div className="patience-notice">
+                  <div className="patience-header">
+                    <ClockCircleOutlined />
+                    <span>添加配图步骤时间较长，请耐心等待</span>
+                  </div>
+                  <p className="patience-desc">
+                    图片的生成与分析需要一定时间，可以去生成其他文章呦～当前任务会在后台继续执行。
+                  </p>
+                  <Button
+                    type="primary"
+                    ghost
+                    icon={<RocketOutlined />}
+                    onClick={resetCreate}
+                    className="new-article-btn"
+                  >
+                    创建新文章
+                  </Button>
                 </div>
               )}
 
@@ -716,8 +723,8 @@ const ArticleCreatePage: React.FC = () => {
           {currentPhase === 'INPUT' && (
             <div className="panel-section quota-section">
               <h4 className="panel-title">
-                <CrownOutlined />
-                创作配额
+                <RocketOutlined />
+                创作权限
               </h4>
               {isAdmin && (
                 <div className="quota-admin">
@@ -725,28 +732,10 @@ const ArticleCreatePage: React.FC = () => {
                   <span className="quota-text">无限次</span>
                 </div>
               )}
-              {!isAdmin && isVip && (
+              {!isAdmin && (
                 <div className="quota-admin">
-                  <span className="quota-badge vip">VIP 会员</span>
-                  <span className="quota-text">无限次</span>
-                </div>
-              )}
-              {!isAdmin && !isVip && (
-                <div className="quota-info">
-                  <div className="quota-display">
-                    <span className={`quota-number ${quota <= 1 ? 'low' : ''} ${quota === 0 ? 'empty' : ''}`}>
-                      {quota}
-                    </span>
-                    <span className="quota-unit">次</span>
-                  </div>
-                  <div className="quota-label">剩余可用</div>
-                  <Progress
-                    percent={(quota / 5) * 100}
-                    showInfo={false}
-                    strokeColor={quota <= 1 ? '#ff4d4f' : '#22C55E'}
-                    size="small"
-                    className="quota-progress"
-                  />
+                  <span className="quota-badge user">注册用户</span>
+                  <span className="quota-text">无限制</span>
                 </div>
               )}
             </div>
@@ -986,16 +975,6 @@ const ArticleCreatePage: React.FC = () => {
             </>
           )}
 
-          <div className="panel-footer">
-            <a className="help-link">
-              <QuestionCircleOutlined />
-              使用帮助
-            </a>
-            <a className="help-link">
-              <MessageOutlined />
-              反馈建议
-            </a>
-          </div>
         </aside>
       </div>
 
