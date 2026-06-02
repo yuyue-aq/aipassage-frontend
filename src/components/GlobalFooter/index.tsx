@@ -9,14 +9,7 @@ const GlobalFooter: React.FC = () => {
     <Footer className="footer">
       <div className="footer-content">
         <p className="copyright">
-          <a
-            href="https://www.codefather.cn"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="author-link"
-          >
-            编程导航原创项目
-          </a>
+          AI Passage ©{new Date().getFullYear()}
         </p>
       </div>
     </Footer>

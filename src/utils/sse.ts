@@ -1,6 +1,5 @@
 /**
  * SSE 工具函数（支持断线重连）
- * @author <a href="https://codefather.cn">编程导航学习圈</a>
  */
 
 import { BACKEND_HOST_LOCAL } from '@/constants';
