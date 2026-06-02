@@ -80,6 +80,15 @@ export default defineConfig({
   title: 'AI文章创作器',
   layout: false,
   /**
+   * @name 网站图标
+   * @description 配置 <head> 中的 favicon 和 PWA 图标
+   */
+  links: [
+    { rel: 'icon', href: '/favicon.ico', type: 'image/x-icon' },
+    { rel: 'shortcut icon', href: '/favicon.ico', type: 'image/x-icon' },
+    { rel: 'apple-touch-icon', sizes: '192x192', href: '/logo192.png' },
+  ],
+  /**
    * @name moment2dayjs 插件
    * @description 将项目中的 moment 替换为 dayjs
    * @doc https://umijs.org/docs/max/moment2dayjs

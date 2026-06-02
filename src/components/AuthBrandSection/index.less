@@ -6,6 +6,34 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
+
+  /* 紫色-靛蓝渐变背景 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #1E1B4B 0%, #312E81 30%, #A855F7 70%, #9333EA 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 10s ease-in-out infinite;
+  }
+
+  /* 装饰性漂浮光球 — 右上 */
+  &::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(192, 132, 252, 0.2), transparent 70%);
+    top: -100px;
+    right: -100px;
+    filter: blur(60px);
+    animation: float-lg 12s ease-in-out infinite;
+    pointer-events: none;
+  }
 }
 
 .brand-bg {
@@ -14,18 +42,33 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #22C55E 0%, #16A34A 50%, #15803D 100%);
-}
 
-.brand-bg::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
-  animation: pulse-bg 8s ease-in-out infinite;
+  /* 径向渐变呼吸层 */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 60%);
+    animation: pulse-bg 8s ease-in-out infinite;
+  }
+
+  /* 左下粉紫光球 */
+  &::after {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.15), transparent 70%);
+    bottom: -60px;
+    left: -60px;
+    filter: blur(50px);
+    animation: float-reverse 10s ease-in-out infinite;
+    pointer-events: none;
+  }
 }
 
 @keyframes pulse-bg {
@@ -75,10 +118,13 @@
 
 .brand-features {
   text-align: left;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-lg);
   padding: 20px 24px;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.6s ease-out 0.3s both;
 }
 
 .feature-item {
@@ -87,10 +133,15 @@
   gap: 12px;
   margin-bottom: 14px;
   font-size: 14px;
-}
+  transition: transform var(--transition-fast);
 
-.feature-item:last-child {
-  margin-bottom: 0;
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    transform: translateX(4px);
+  }
 }
 
 .feature-check {
@@ -111,4 +162,3 @@
     display: none;
   }
 }
-

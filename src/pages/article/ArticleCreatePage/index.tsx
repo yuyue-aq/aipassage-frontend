@@ -518,12 +518,12 @@ const ArticleCreatePage: React.FC = () => {
                       onChange={(values) => setSelectedImageMethods(values as string[])}
                       className="methods-group"
                     >
-                      <Checkbox value="PEXELS">Pexels</Checkbox>
-                      <Checkbox value="NANO_BANANA">Nano Banana</Checkbox>
-                      <Checkbox value="MERMAID">Mermaid</Checkbox>
-                      <Checkbox value="ICONIFY">Iconify</Checkbox>
-                      <Checkbox value="EMOJI_PACK">表情包</Checkbox>
-                      <Checkbox value="SVG_DIAGRAM">SVG</Checkbox>
+                      <Checkbox value="PEXELS">Pexels（免费图片素材）</Checkbox>
+                      <Checkbox value="NANO_BANANA">Nano Banana（AI生成图片）</Checkbox>
+                      <Checkbox value="MERMAID">Mermaid（画图表）</Checkbox>
+                      <Checkbox value="ICONIFY">Iconify（图标素材）</Checkbox>
+                      <Checkbox value="EMOJI_PACK">表情包（趣味表情）</Checkbox>
+                      <Checkbox value="SVG_DIAGRAM">SVG（矢量图）</Checkbox>
                     </Checkbox.Group>
                   </div>
 

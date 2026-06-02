@@ -49,6 +49,15 @@
   --glass-bg: rgba(255, 255, 255, 0.9);
   --glass-bg-purple: rgba(243, 240, 255, 0.8);
   --glass-blur: blur(12px);
+  /* 新增：艺术增强变量 */
+  --color-glow: rgba(168, 85, 247, 0.25);
+  --color-glow-strong: rgba(168, 85, 247, 0.4);
+  --color-primary-subtle: rgba(168, 85, 247, 0.08);
+  --glass-border: 1px solid rgba(168, 85, 247, 0.12);
+  --glass-shadow: 0 8px 32px rgba(168, 85, 247, 0.08), 0 2px 8px rgba(168, 85, 247, 0.04);
+  --glass-shadow-lg: 0 16px 48px rgba(168, 85, 247, 0.12), 0 4px 12px rgba(168, 85, 247, 0.06);
+  --noise-opacity: 0.015;
+  --transition-bounce: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* ========== 深色主题 ========== */
@@ -86,6 +95,15 @@
   --glass-bg: rgba(13, 11, 38, 0.9);
   --glass-bg-purple: rgba(168, 85, 247, 0.15);
   --glass-blur: blur(12px);
+  /* 新增：艺术增强变量（深色） */
+  --color-glow: rgba(192, 132, 252, 0.15);
+  --color-glow-strong: rgba(192, 132, 252, 0.3);
+  --color-primary-subtle: rgba(192, 132, 252, 0.06);
+  --glass-border: 1px solid rgba(192, 132, 252, 0.1);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.15);
+  --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2);
+  --noise-opacity: 0.02;
+  --transition-bounce: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* 自动跟随系统主题 (仅在用户未手动设置时生效) */
@@ -124,6 +142,15 @@
     --glass-bg: rgba(13, 11, 38, 0.9);
     --glass-bg-purple: rgba(168, 85, 247, 0.15);
     --glass-blur: blur(12px);
+    /* 新增：艺术增强变量（系统深色） */
+    --color-glow: rgba(192, 132, 252, 0.15);
+    --color-glow-strong: rgba(192, 132, 252, 0.3);
+    --color-primary-subtle: rgba(192, 132, 252, 0.06);
+    --glass-border: 1px solid rgba(192, 132, 252, 0.1);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.15);
+    --glass-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2);
+    --noise-opacity: 0.02;
+    --transition-bounce: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   /* 自动跟随系统时 — 下拉 & 浮层 */
@@ -243,22 +270,55 @@ a:hover {
 }
 
 .ant-btn-primary {
-  background: var(--bg-primary);
-  border-color: var(--bg-primary);
+  background: var(--gradient-primary);
+  background-size: 200% 100%;
+  border: none;
   box-shadow: var(--shadow-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.ant-btn-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  background-size: 200% 200%;
+  animation: shimmer 4s ease-in-out infinite;
+  pointer-events: none;
 }
 
 .ant-btn-primary:not(:disabled):hover {
-  background: var(--bg-primary-hover);
-  border-color: var(--bg-primary-hover);
-  box-shadow: 0 6px 20px rgba(168, 85, 247, 0.35);
+  background: var(--gradient-primary);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  border-color: transparent;
+  box-shadow: var(--shadow-primary), 0 0 30px var(--color-glow);
+  transform: translateY(-1px);
+}
+
+.ant-btn-primary:not(:disabled):active {
+  transform: translateY(0) scale(0.98);
 }
 
 .ant-card {
   border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
+  border: var(--glass-border);
   transition: all var(--transition-normal);
   background: var(--color-background);
+}
+
+.ant-card:hover {
+  box-shadow: var(--glass-shadow-lg);
+  border-color: var(--color-primary-light);
 }
 
 .clickable,
@@ -619,6 +679,279 @@ body {
 ul,
 ol {
   list-style: none;
+}
+
+/* ========== Keyframe 动画 ========== */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-16px); }
+}
+
+@keyframes float-reverse {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(16px); }
+}
+
+@keyframes float-lg {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  33% { transform: translateY(-24px) scale(1.02); }
+  66% { transform: translateY(12px) scale(0.98); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 16px var(--color-glow); }
+  50%      { box-shadow: 0 0 40px var(--color-glow-strong); }
+}
+
+@keyframes blob-morph {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25%      { border-radius: 40% 60% 60% 40% / 50% 60% 30% 60%; }
+  50%      { border-radius: 30% 70% 50% 50% / 40% 50% 60% 50%; }
+  75%      { border-radius: 70% 30% 40% 60% / 50% 40% 60% 50%; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes ping {
+  0%   { transform: scale(1); opacity: 1; }
+  75%  { transform: scale(2.2); opacity: 0; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50%      { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes spin-gradient {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ========== 装饰性元素 ========== */
+
+.deco-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.25;
+  pointer-events: none;
+  animation: blob-morph 20s ease-in-out infinite, float-lg 15s ease-in-out infinite;
+}
+
+.deco-blob--purple {
+  width: 480px;
+  height: 480px;
+  background: radial-gradient(circle at 30% 30%, var(--color-primary-light), var(--color-primary), transparent 70%);
+}
+
+.deco-blob--pink {
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle at 70% 40%, #EC4899, var(--color-primary), transparent 70%);
+  animation-delay: -7s, -5s;
+}
+
+.deco-blob--indigo {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle at 50% 50%, var(--color-secondary-light), var(--color-secondary), transparent 70%);
+  animation-delay: -3s, -8s;
+}
+
+.deco-dot-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: radial-gradient(circle, var(--color-primary) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.06;
+}
+
+.deco-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--color-primary);
+  opacity: 0.08;
+  pointer-events: none;
+  animation: spin-slow 30s linear infinite;
+}
+
+.deco-ring--large {
+  width: 500px;
+  height: 500px;
+}
+
+.deco-ring--small {
+  width: 200px;
+  height: 200px;
+  animation-duration: 20s;
+  animation-direction: reverse;
+}
+
+.deco-sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  pointer-events: none;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.deco-sparkle:nth-child(2n) { animation-delay: 1s; }
+.deco-sparkle:nth-child(3n) { animation-delay: 2s; }
+.deco-sparkle:nth-child(4n) { background: #EC4899; }
+.deco-sparkle:nth-child(5n) { background: #22C55E; }
+
+/* ========== 噪点纹理 ========== */
+
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: var(--noise-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  mix-blend-mode: overlay;
+}
+
+/* ========== 自定义滚动条 ========== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+  border: 2px solid var(--color-background);
+  transition: background var(--transition-fast);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+/* ========== 滚动揭示动画 ========== */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal--left {
+  transform: translateX(-30px);
+}
+
+.reveal--left.visible {
+  transform: translateX(0);
+}
+
+.reveal--right {
+  transform: translateX(30px);
+}
+
+.reveal--right.visible {
+  transform: translateX(0);
+}
+
+.reveal--scale {
+  transform: scale(0.9);
+}
+
+.reveal--scale.visible {
+  transform: scale(1);
+}
+
+/* 错开延迟 */
+.reveal:nth-child(2)  { transition-delay: 0.08s; }
+.reveal:nth-child(3)  { transition-delay: 0.16s; }
+.reveal:nth-child(4)  { transition-delay: 0.24s; }
+.reveal:nth-child(5)  { transition-delay: 0.32s; }
+.reveal:nth-child(6)  { transition-delay: 0.40s; }
+.reveal:nth-child(7)  { transition-delay: 0.48s; }
+.reveal:nth-child(8)  { transition-delay: 0.56s; }
+
+/* ========== 减弱动画偏好 ========== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ========== 响应式 ========== */

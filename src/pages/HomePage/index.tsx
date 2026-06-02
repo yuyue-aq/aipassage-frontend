@@ -136,14 +136,14 @@ const HomePage: React.FC = () => {
 
       <div className="features-section">
         <div className="container">
-          <div className="section-header">
+          <div className="section-header reveal">
             <div className="section-badge">核心能力</div>
             <h2 className="section-title">专业人士的一站式AI写作工具</h2>
             <p className="section-subtitle">强大的 AI 能力，让创作变得简单高效</p>
           </div>
           <div className="features-grid">
             {features.map((feature, index) => (
-              <div key={index} className="feature-card">
+              <div key={index} className="feature-card reveal">
                 <div className="feature-icon-wrapper" style={{ background: `${feature.color}15` }}>
                   <span className="feature-icon" style={{ color: feature.color }}>
                     {feature.icon}
@@ -162,7 +162,7 @@ const HomePage: React.FC = () => {
       {currentUser?.id && recentArticles.length > 0 && (
         <div className="articles-section">
           <div className="container">
-            <div className="section-header-row">
+            <div className="section-header-row reveal">
               <div>
                 <h2 className="section-title-sm">最近创作</h2>
                 <p className="section-subtitle-sm">查看您最近创作的文章</p>
@@ -189,7 +189,7 @@ const HomePage: React.FC = () => {
                 {recentArticles.map((article) => (
                   <div
                     key={article.id}
-                    className="article-card"
+                    className="article-card reveal"
                     onClick={() => viewArticle(article)}
                   >
                     <div className="article-cover">

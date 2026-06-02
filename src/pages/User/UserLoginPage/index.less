@@ -15,7 +15,7 @@
   background: var(--color-background);
   border-radius: var(--radius-2xl);
   overflow: hidden;
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-xl), 0 0 0 1px var(--color-border);
 }
 
 .form-section {
@@ -30,6 +30,7 @@
 .form-card {
   width: 100%;
   max-width: 320px;
+  animation: fadeInUp 0.6s ease-out both;
 }
 
 .form-title {
@@ -77,20 +78,48 @@
   font-weight: 600;
   border-radius: var(--radius-lg);
   background: var(--gradient-primary) !important;
+  background-size: 200% 100% !important;
   border: none !important;
   color: white !important;
   box-shadow: var(--shadow-primary) !important;
-  transition: opacity var(--transition-normal) !important;
-}
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-normal) !important;
 
-.submit-btn:hover,
-.submit-btn:focus,
-.submit-btn:active {
-  background: var(--gradient-primary) !important;
-  border: none !important;
-  color: white !important;
-  box-shadow: var(--shadow-primary) !important;
-  opacity: 0.92;
+  /* 光泽扫过动画 */
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 70%
+    );
+    background-size: 200% 200%;
+    animation: shimmer 5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: var(--gradient-primary) !important;
+    background-size: 200% 100% !important;
+    background-position: 100% 0 !important;
+    border: none !important;
+    color: white !important;
+    box-shadow: var(--shadow-primary), 0 0 24px var(--color-glow) !important;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
 }
 
 .form-footer {
