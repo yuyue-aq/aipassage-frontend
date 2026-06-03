@@ -1,0 +1,26 @@
+######### 运维文件，开发时请不要删除 ##########
+# :80 {
+# 	root * /srv
+
+# 	file_server
+# 	try_files {path} /index.html
+# 	encode
+# }
+
+# http://localhost:64445 http://127.0.0.1:64445 http://[::1]:64445 {
+# 	reverse_proxy {$BACKEND_HOST}:{$BACKEND_PORT}
+# 	encode
+# }
+
+:80 {
+	root * /srv
+
+	handle /api/* {
+		reverse_proxy {$BACKEND_HOST}:{$BACKEND_PORT}
+	}
+
+	handle {
+		file_server
+		try_files {path} /index.html
+	}
+}

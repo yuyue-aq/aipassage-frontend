@@ -1,0 +1,6 @@
+.claude
+node_modules
+dist
+.gitignore
+Dockerfile
+compose.yaml
