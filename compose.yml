@@ -1,0 +1,13 @@
+name: "aipassage-frontend"
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - "80"
+    ports:
+      - "${AIPASSAGE_FRONTEND_LOCAL_PORT}:80"
+    environment:
+      - BACKEND_HOST=${AIPASSAGE_BACKEND_HOST}
+      - BACKEND_PORT=${AIPASSAGE_BACKEND_PORT}
