@@ -42,7 +42,7 @@ const Login: React.FC = () => {
       history.push(urlParams.get('redirect') || '/');
       return;
     } catch (error: any) {
-      const defaultLoginFailureMessage = `登录失败，${error.message}`;
+      const defaultLoginFailureMessage = '用户名不存在或密码错误';
       message.error(defaultLoginFailureMessage);
     }
   };

@@ -15,12 +15,16 @@ const UserRegisterPage: React.FC = () => {
       return;
     }
 
-    const res = await userRegisterUsingPost(values);
-    if (res?.code === 0) {
-      message.success('注册成功');
-      navigate('/user/login', { replace: true });
-    } else {
-      message.error(`注册失败，${res?.message || ''}`);
+    try {
+      const res = await userRegisterUsingPost(values);
+      if (res?.code === 0) {
+        message.success('注册成功');
+        navigate('/user/login', { replace: true });
+      } else {
+        message.error(`注册失败，${res?.message || ''}`);
+      }
+    } catch (error: any) {
+      message.error(`注册失败，${error.message || ''}`);
     }
   };
 
@@ -37,7 +41,10 @@ const UserRegisterPage: React.FC = () => {
             <Form layout="vertical" name="register" onFinish={handleSubmit} className="register-form">
               <Form.Item
                 name="userAccount"
-                rules={[{ required: true, message: '请输入账号' }]}
+                rules={[
+                  { required: true, message: '请输入账号' },
+                  { min: 3, message: '用户名过短' },
+                ]}
               >
                 <Input
                   placeholder="请输入账号"

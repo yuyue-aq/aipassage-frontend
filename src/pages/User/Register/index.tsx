@@ -33,8 +33,13 @@ const UserRegisterPage: React.FC = () => {
    */
   const handleSubmit = async (values: API.UserRegisterRequest) => {
     // 前端校验
-    // 1. 判断密码是否一致
-    const { userPassword, checkPassword } = values;
+    // 1. 判断用户名长度
+    const { userAccount, userPassword, checkPassword } = values;
+    if (userAccount && userAccount.length < 3) {
+      message.error('用户名过短');
+      return;
+    }
+    // 2. 判断密码是否一致
     if (userPassword !== checkPassword) {
       message.error('二次输入的密码不一致');
       return;
@@ -113,6 +118,10 @@ const UserRegisterPage: React.FC = () => {
                   {
                     required: true,
                     message: '账号是必填项！',
+                  },
+                  {
+                    min: 3,
+                    message: '用户名过短',
                   },
                 ]}
               />

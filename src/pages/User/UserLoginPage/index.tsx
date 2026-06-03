@@ -11,16 +11,20 @@ const UserLoginPage: React.FC = () => {
   const { initialState, setInitialState } = useModel('@@initialState');
 
   const handleSubmit = async (values: API.UserLoginRequest) => {
-    const res = await userLoginUsingPost(values);
-    if (res?.code === 0 && res.data) {
-      setInitialState({
-        ...(initialState || {}),
-        currentUser: res.data,
-      });
-      message.success('登录成功');
-      navigate('/', { replace: true });
-    } else {
-      message.error(`登录失败，${res?.message || ''}`);
+    try {
+      const res = await userLoginUsingPost(values);
+      if (res?.code === 0 && res.data) {
+        setInitialState({
+          ...(initialState || {}),
+          currentUser: res.data,
+        });
+        message.success('登录成功');
+        navigate('/', { replace: true });
+      } else {
+        message.error('用户名不存在或密码错误');
+      }
+    } catch (error: any) {
+      message.error('用户名不存在或密码错误');
     }
   };
 
