@@ -16,10 +16,12 @@
 	root * /srv
 
 	handle /api/* {
+		encode
 		reverse_proxy {$BACKEND_HOST}:{$BACKEND_PORT}
 	}
 
 	handle {
+		encode
 		file_server
 		try_files {path} /index.html
 	}
