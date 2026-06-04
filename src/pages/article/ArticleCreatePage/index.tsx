@@ -511,7 +511,7 @@ const ArticleCreatePage: React.FC = () => {
                   <div className="image-methods-section">
                     <div className="section-header">
                       <span className="section-title">配图方式</span>
-                      <span className="section-tip">（不选择表示支持所有方式）</span>
+                      <span className="section-tip">（不选择表示不配图）</span>
                     </div>
                     <Checkbox.Group
                       value={selectedImageMethods}
