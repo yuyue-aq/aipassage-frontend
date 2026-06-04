@@ -39,3 +39,6 @@ screenshot
 .eslintcache
 
 build
+
+# Docker Compose environment variables file
+compose.env
